@@ -26,9 +26,11 @@ local logline_to_hash="echo {} | grep -o '[a-f0-9]\{7\}' | head -1"
 local show_log="$logline_to_hash | xargs -I % sh -c 'git show --color=always %' $fancy"
 
 # clipboard
-if [[ $(uname -s) == "Darwin" ]]; then
+if type pbcopy > /dev/null; then # osx
     local clipboard=pbcopy
-else
+elif type xsel > /dev/null; then # x11
+    local clipboard=xsel
+elif type xclip > /dev/null; then # x11
     local clipboard=xclip
 fi
 
